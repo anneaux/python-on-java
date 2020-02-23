@@ -49,36 +49,33 @@ void application::execute() {
       }
     }
 
-    // Futter zeichnen
+    // Make food
     sf::CircleShape food(kaestchenlaenge / 2);
     food.setPosition(foodx * (kaestchenlaenge + gitterdicke),
                      foody * (kaestchenlaenge + gitterdicke));
     food.setFillColor(sf::Color(foodred, foodgreen, foodblue));
     window.draw(food);
 
-    // Schlange berechnen
+    // Calculate snake
     for (int k = 1; k <= snakevector.size() - 2; ++k) {
       snakevector[snakevector.size() - k] =
           snakevector[snakevector.size() - k - 2];
     }
-    if (movement == 0) {
-      snakevector[1] = snakevector[1] - 1;
-      if (snakevector[1] == -1) snakevector[1] = rasterhoehe;
-    }
-    if (movement == 1) {
-      snakevector[0] = snakevector[0] + 1;
-      if (snakevector[0] == rasterbreite + 1) snakevector[0] = 0;
-    }
-    if (movement == 2) {
-      snakevector[1] = snakevector[1] + 1;
-      if (snakevector[1] == rasterhoehe + 1) snakevector[1] = 0;
-    }
-    if (movement == 3) {
-      snakevector[0] = snakevector[0] - 1;
-      if (snakevector[0] == -1) snakevector[0] = rasterbreite;
-    }
+    if (movement == 0)
+      snakevector[1] =
+          snakevector[1] - 1 +
+          rasterhoehe * (rasterhoehe / (rasterhoehe + snakevector[1]));
+    else if (movement == 1)
+      snakevector[0] =
+          (snakevector[0] + 1) * (1 - snakevector[0] / (rasterbreite - 1));
+    else if (movement == 2)
+      snakevector[1] =
+          (snakevector[1] + 1) * (1 - snakevector[1] / (rasterhoehe - 1));
+    else if (movement == 3)
+      snakevector[0] =
+          snakevector[0] - 1 +
+          rasterbreite * (rasterbreite / (rasterbreite + snakevector[0]));
 
-    // std::cout << "vor Schlange zeichnen " << snakevector.size() << "\n";
     for (int l = 1; l <= snakevector.size() / 2; ++l) {
       sf::CircleShape snake(kaestchenlaenge / 2);
       snake.setFillColor(sf::Color(snakered, snakegreen, snakeblue));
