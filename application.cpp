@@ -18,6 +18,7 @@ void application::execute() {
   std::vector<int> snakevector(2 * snakelength);
   snakevector[0] = rasterbreite / 2;
   snakevector[1] = rasterhoehe / 2;
+  std::clock_t starttime = std::clock();
 
   while (window.isOpen()) {
     sf::Event event;
@@ -56,26 +57,31 @@ void application::execute() {
     food.setFillColor(sf::Color(foodred, foodgreen, foodblue));
     window.draw(food);
 
-    // Calculate snake
-    for (int k = 1; k <= snakevector.size() - 2; ++k) {
-      snakevector[snakevector.size() - k] =
-          snakevector[snakevector.size() - k - 2];
+    double duration = (std::clock() - starttime) / (double)CLOCKS_PER_SEC;
+    float elapsetime = speed / (float)1000;
+    std::cout << elapsetime << "," << duration << "\n";
+    if (duration >= elapsetime) {
+      // Calculate snake
+      starttime = std::clock();
+      for (int k = 1; k <= snakevector.size() - 2; ++k) {
+        snakevector[snakevector.size() - k] =
+            snakevector[snakevector.size() - k - 2];
+      }
+      if (movement == 0)
+        snakevector[1] = (rasterhoehe + snakevector[1] - 1) % (rasterhoehe);
+      // snakevector[1] - 1 +
+      // rasterhoehe * (rasterhoehe / (rasterhoehe + snakevector[1]));
+      else if (movement == 1)
+        snakevector[0] = (snakevector[0] + 1) % rasterbreite;
+      // (snakevector[0] + 1) * (1 - snakevector[0] / (rasterbreite - 1));
+      else if (movement == 2)
+        snakevector[1] = (snakevector[1] + 1) % rasterhoehe;
+      // (snakevector[1] + 1) * (1 - snakevector[1] / (rasterhoehe - 1));
+      else if (movement == 3)
+        snakevector[0] = (rasterbreite + snakevector[0] - 1) % rasterbreite;
+      // snakevector[0] - 1 +
+      // rasterbreite * (rasterbreite / (rasterbreite + snakevector[0]));
     }
-    if (movement == 0)
-      snakevector[1] = (rasterhoehe + snakevector[1] - 1) % (rasterhoehe);
-    // snakevector[1] - 1 +
-    // rasterhoehe * (rasterhoehe / (rasterhoehe + snakevector[1]));
-    else if (movement == 1)
-      snakevector[0] = (snakevector[0] + 1) % rasterbreite;
-    // (snakevector[0] + 1) * (1 - snakevector[0] / (rasterbreite - 1));
-    else if (movement == 2)
-      snakevector[1] = (snakevector[1] + 1) % rasterhoehe;
-    // (snakevector[1] + 1) * (1 - snakevector[1] / (rasterhoehe - 1));
-    else if (movement == 3)
-      snakevector[0] = (rasterbreite + snakevector[0] - 1) % rasterbreite;
-    // snakevector[0] - 1 +
-    // rasterbreite * (rasterbreite / (rasterbreite + snakevector[0]));
-
     for (int l = 1; l <= snakevector.size() / 2; ++l) {
       sf::CircleShape snake(kaestchenlaenge / 2);
       snake.setFillColor(sf::Color(snakered, snakegreen, snakeblue));
@@ -96,15 +102,16 @@ void application::execute() {
         snakevector.resize(snakevector.size() + 2);
         speed = speed - 50;
 
-        foodred = rand() % 255;
-        foodgreen = rand() % 255;
-        foodblue = rand() % 255;
-        foodx = rand() % rasterbreite;
-        foody = rand() % rasterhoehe;
+        foodred = distcolor(rng);
+        foodgreen = distcolor(rng);
+        foodblue = distcolor(rng);
+        foodx = distx(rng);
+        foody = disty(rng);
       }
     }
 
-    sf::sleep(sf::milliseconds(speed));
+    // sf::sleep(sf::milliseconds(speed));
+
     window.display();
   }
 }

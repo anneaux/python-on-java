@@ -5,6 +5,7 @@
 #include <SFML/Graphics.hpp>
 #include <cmath>
 #include <iostream>
+#include <random>
 #include <vector>
 
 class application {
@@ -28,7 +29,12 @@ class application {
   int rasterhoehe = height / (kaestchenlaenge + gitterdicke);
   int startx = rasterbreite / 2;
   int starty = rasterhoehe / 2;
-  int foodx = rand() % rasterbreite;
-  int foody = rand() % rasterhoehe;
+  std::random_device rd{};
+  std::mt19937 rng{rd()};
+  std::uniform_int_distribution<int> distx{0, rasterbreite};
+  int foodx = distx(rng);
+  std::uniform_int_distribution<int> disty{0, rasterhoehe};
+  int foody = disty(rng);
+  std::uniform_int_distribution<int> distcolor{0, 255};
   sf::RenderWindow window{sf::VideoMode(width, height), "Let's play!"};
 };
