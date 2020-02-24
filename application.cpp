@@ -62,19 +62,19 @@ void application::execute() {
           snakevector[snakevector.size() - k - 2];
     }
     if (movement == 0)
-      snakevector[1] =
-          snakevector[1] - 1 +
-          rasterhoehe * (rasterhoehe / (rasterhoehe + snakevector[1]));
+      snakevector[1] = (rasterhoehe + snakevector[1] - 1) % (rasterhoehe);
+    // snakevector[1] - 1 +
+    // rasterhoehe * (rasterhoehe / (rasterhoehe + snakevector[1]));
     else if (movement == 1)
-      snakevector[0] =
-          (snakevector[0] + 1) * (1 - snakevector[0] / (rasterbreite - 1));
+      snakevector[0] = (snakevector[0] + 1) % rasterbreite;
+    // (snakevector[0] + 1) * (1 - snakevector[0] / (rasterbreite - 1));
     else if (movement == 2)
-      snakevector[1] =
-          (snakevector[1] + 1) * (1 - snakevector[1] / (rasterhoehe - 1));
+      snakevector[1] = (snakevector[1] + 1) % rasterhoehe;
+    // (snakevector[1] + 1) * (1 - snakevector[1] / (rasterhoehe - 1));
     else if (movement == 3)
-      snakevector[0] =
-          snakevector[0] - 1 +
-          rasterbreite * (rasterbreite / (rasterbreite + snakevector[0]));
+      snakevector[0] = (rasterbreite + snakevector[0] - 1) % rasterbreite;
+    // snakevector[0] - 1 +
+    // rasterbreite * (rasterbreite / (rasterbreite + snakevector[0]));
 
     for (int l = 1; l <= snakevector.size() / 2; ++l) {
       sf::CircleShape snake(kaestchenlaenge / 2);
