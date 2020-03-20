@@ -5,6 +5,7 @@
 #include <SFML/Graphics.hpp>
 #include <cmath>
 #include <iostream>
+#include <list>
 #include <random>
 #include <vector>
 
@@ -22,18 +23,18 @@ class application {
   float origin_x = 0;
   float origin_y = 0;
   float fov = 4;
-  int snakelength = 1;
-  int kaestchenlaenge = 10;
-  int gitterdicke = 2;
-  int rasterbreite = width / (kaestchenlaenge + gitterdicke);
-  int rasterhoehe = height / (kaestchenlaenge + gitterdicke);
-  int startx = rasterbreite / 2;
-  int starty = rasterhoehe / 2;
+  int snakelength = 6;
+  int boxlength = 10;
+  int linewidth = 2;
+  int gridwidth = width / (boxlength + linewidth);
+  int gridheight = height / (boxlength + linewidth);
+  int startx = gridwidth / 2;
+  int starty = gridheight / 2;
   std::random_device rd{};
   std::mt19937 rng{rd()};
-  std::uniform_int_distribution<int> distx{0, rasterbreite};
+  std::uniform_int_distribution<int> distx{0, gridwidth - 1};
   int foodx = distx(rng);
-  std::uniform_int_distribution<int> disty{0, rasterhoehe};
+  std::uniform_int_distribution<int> disty{0, gridheight - 1};
   int foody = disty(rng);
   std::uniform_int_distribution<int> distcolor{0, 255};
   sf::RenderWindow window{sf::VideoMode(width, height), "Let's play!"};
