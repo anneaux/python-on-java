@@ -4,6 +4,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <cmath>
+#include <game.hpp>
 #include <iostream>
 #include <list>
 #include <random>
@@ -18,6 +19,11 @@ class application {
   void execute();
 
  private:
+  void process_input();
+  void render();
+  void failalertwindow();
+
+ private:
   int height = 600;
   int width = 600;
   float origin_x = 0;
@@ -26,16 +32,13 @@ class application {
   int snakelength = 6;
   int boxlength = 10;
   int linewidth = 2;
-  int gridwidth = width / (boxlength + linewidth);
-  int gridheight = height / (boxlength + linewidth);
-  int startx = gridwidth / 2;
-  int starty = gridheight / 2;
+
   std::random_device rd{};
   std::mt19937 rng{rd()};
-  std::uniform_int_distribution<int> distx{0, gridwidth - 1};
-  int foodx = distx(rng);
-  std::uniform_int_distribution<int> disty{0, gridheight - 1};
-  int foody = disty(rng);
+
   std::uniform_int_distribution<int> distcolor{0, 255};
+  std::vector<int> foodcolor = {100, 0, 50};
+  std::vector<int> snakecolor = {50, 100, 0};
   sf::RenderWindow window{sf::VideoMode(width, height), "Let's play!"};
+  game state;
 };
