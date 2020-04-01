@@ -1,8 +1,11 @@
 .PHONY: clean
+TARGET = main
+HEADERS = game.hpp application.hpp button.hpp
+SOURCES = game.cpp application.cpp main.cpp
 
-main: main.cpp application.cpp application.hpp button.hpp game.cpp game.hpp
-	g++ -o main main.cpp application.cpp game.cpp -I./ -lsfml-graphics -lsfml-window -lsfml-system -std=c++17
-	./main
+$(TARGET): $(HEADERS) $(SOURCES)
+	g++ -o $(TARGET) $(SOURCES) -I./ -lsfml-graphics -lsfml-window -lsfml-system -std=c++17
+	./$(TARGET)
 
 clean:
-	rm main
+	rm $(TARGET)

@@ -82,30 +82,19 @@ void application::render() {
   }
   // Make food
   sf::CircleShape food(boxlength / 2);
-  food.setPosition(state.foodx * (boxlength + linewidth),
-                   state.foody * (boxlength + linewidth));
+  food.setPosition(state.food.x * (boxlength + linewidth),
+                   state.food.y * (boxlength + linewidth));
   food.setFillColor(sf::Color(foodcolor[0], foodcolor[1], foodcolor[2]));
 
   window.draw(food);
 
   // Draw snake
-  int snakex;
-  int snakey;
-  std::list<int>::iterator it2;
-  it2 = state.snakelist.begin();
-  while (it2 != state.snakelist.end()) {
-    // int currentitem = *it2;
+  for (const auto p : state.snakelist) {
     sf::CircleShape snake(boxlength / 2);
     snake.setFillColor(sf::Color(snakecolor[0], snakecolor[1], snakecolor[2]));
-    snakex = *it2;
-    it2++;
-    snakey = *it2;
-    snake.setPosition(snakex * (boxlength + linewidth),
-                      snakey * (boxlength + linewidth));
-
+    snake.setPosition(p.x * (boxlength + linewidth),
+                      p.y * (boxlength + linewidth));
     window.draw(snake);
-
-    it2++;
   }
   window.display();
 }

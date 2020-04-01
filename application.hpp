@@ -29,7 +29,6 @@ class application {
   float origin_x = 0;
   float origin_y = 0;
   float fov = 4;
-  int snakelength = 6;
   int boxlength = 10;
   int linewidth = 2;
 
